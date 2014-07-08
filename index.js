@@ -115,17 +115,18 @@ Illuminati.readable('server', function server(fn) {
   browserify(this.files, this.conf.browserify || {
     basedir: this.root
   }, function (err, source, map) {
-    source += '//# sourceMappingURL=/illuminati.json';
+    source += '//# sourceMappingURL=/illuminati.map';
     map.file = '/illuminati.js';
 
     illuminati.assets.push({
-      data: source,
+      type: 'text/javascript',
       url: '/illuminati.js',
-      type: 'text/javascript'
+      data: source
     }, {
-      data: map,
-      url: '/illuminati.json',
-      type: 'application/json'
+      data: JSON.stringify(map),
+      type: 'application/json',
+      url: '/illuminati.map',
+      map: map
     });
 
     require('connected')(app, illuminati.conf.port, fn);
