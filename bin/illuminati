@@ -1,0 +1,8 @@
+#!/usr/bin/env node
+
+'use strict';
+
+var Illuminati = require('../')
+  , illuminati = new Illuminati(process.cwd());
+
+illuminati.run();

@@ -1,0 +1,39 @@
+{
+  "name": "illuminati",
+  "version": "0.0.0",
+  "description": "secret society",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "illuminati"
+  ],
+  "author": "Arnout Kazemier",
+  "license": "MIT",
+  "bin": {
+    "illuminati": "./bin/illuminati"
+  },
+  "illuminati": {
+    "homepage": "https://github.com/illuminati",
+    "port": 1333,
+    "reporter": "spec",
+    "ui": "bdd"
+  },
+  "homepage": "https://github.com/3rd-eden/illuminati",
+  "dependencies": {
+    "argh": "0.1.x",
+    "assume": "0.0.x",
+    "browserify": "4.2.x",
+    "connected": "0.0.x",
+    "convert-source-map": "0.3.x",
+    "dot-component": "0.1.x",
+    "eventemitter3": "0.1.x",
+    "fusing": "0.3.x",
+    "minimatch": "0.3.x",
+    "mocha": "1.20.x",
+    "mocha-phantomjs": "3.5.x",
+    "phantomjs": "1.9.x",
+    "pre-commit": "0.0.x"
+  }
+}
