@@ -69,10 +69,20 @@ Illuminati.readable('glob', '*.test.js');
  * @public
  */
 Illuminati.writable('assets', [
-  './node_modules/mocha/mocha.js',
-  './node_modules/mocha/mocha.css',
+  './mocha.js',
+  './mocha.css',
   './index.html'
-]);
+].map(function optimize(file) {
+  if (!~file.indexOf('mocha')) return file;
+
+  //
+  // Make sure that the files are resolved from the correct location, we cannot
+  // trust `npm` to always add them in a `./node_modules/mocha` folder. It can
+  // be some odd parent root if the user has already installed a mocha
+  // somewhere.
+  //
+  return path.join(path.dirname(require.resolve('mocha')), file);
+}));
 
 /**
  * Run the actual test suites.
@@ -155,7 +165,7 @@ Illuminati.readable('server', function server(fn) {
  */
 Illuminati.readable('phantomjs', function phantomjs(fn) {
   var phantom = child.spawn(
-    path.join(__dirname, 'node_modules', '.bin', 'mocha-phantomjs'), [
+    path.join(path.dirname(require.resolve('mocha-phantomjs')), '..', '.bin', 'mocha-phantomjs'), [
       'http://localhost:'+ this.conf.port
   ], {
     stdio: 'inherit'
@@ -180,7 +190,7 @@ Illuminati.readable('phantomjs', function phantomjs(fn) {
  */
 Illuminati.readable('mocha', function mochas(fn) {
   var mocha = child.spawn(
-    path.join(__dirname, 'node_modules', '.bin', 'mocha'), [
+    path.join(path.dirname(require.resolve('mocha')), '..', '.bin', 'mocha'), [
       '--require', 'assume',
       '--reporter', this.conf.reporter,
       '--ui', this.conf.ui
@@ -257,11 +267,15 @@ Illuminati.readable('introduce', function introduce(data, template) {
  */
 Illuminati.readable('map', function map(file) {
   if ('string' !== typeof file) {
-    return file; // Already processed, do not give a fuck
+    return file; // Already processed, do not give a fuck.
   }
 
+  var location = file.charAt(0) !== '/'
+    ? path.join(__dirname, file)
+    : file;
+
   return {
-    data: fs.readFileSync(path.join(__dirname, file), 'utf-8'),
+    data: fs.readFileSync(location, 'utf-8'),
     url: '/'+ path.basename(file),
     type: {
       js:   'text/javascript',
