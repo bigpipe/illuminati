@@ -115,6 +115,11 @@ Illuminati.readable('server', function server(fn) {
   browserify(this.files, this.conf.browserify || {
     basedir: this.root
   }, function (err, source, map) {
+    if (err) {
+      console.error(err.stack);
+      return process.exit(1);
+    }
+
     source += '//# sourceMappingURL=/illuminati.map';
     map.file = '/illuminati.js';
 
@@ -176,6 +181,7 @@ Illuminati.readable('phantomjs', function phantomjs(fn) {
 Illuminati.readable('mocha', function mochas(fn) {
   var mocha = child.spawn(
     path.join(__dirname, 'node_modules', '.bin', 'mocha'), [
+      '--require', 'assume',
       '--reporter', this.conf.reporter,
       '--ui', this.conf.ui
     ].concat(this.files), {
