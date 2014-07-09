@@ -71,7 +71,7 @@ Illuminati.readable('glob', '*.test.js');
 Illuminati.writable('assets', [
   './mocha.js',
   './mocha.css',
-  './index.html'
+  './view.html'
 ].map(function optimize(file) {
   if (!~file.indexOf('mocha')) return file;
 
@@ -165,7 +165,7 @@ Illuminati.readable('server', function server(fn) {
  */
 Illuminati.readable('phantomjs', function phantomjs(fn) {
   var phantom = child.spawn(
-    path.join(path.dirname(require.resolve('mocha-phantomjs')), '..', '.bin', 'mocha-phantomjs'), [
+    path.join(path.dirname(require.resolve('mocha-phantomjs')), '../..', '.bin', 'mocha-phantomjs'), [
       'http://localhost:'+ this.conf.port
   ], {
     stdio: 'inherit'
@@ -298,7 +298,7 @@ Illuminati.readable('incoming', function incoming(req, res) {
 
   var illuminati = this;
 
-  if (req.url === '/') req.url = '/index.html';
+  if (req.url === '/') req.url = '/view.html';
   if (illuminati.assets.some(function some(asset) {
     if (asset.url !== req.url) return false;
 
