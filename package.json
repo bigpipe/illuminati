@@ -24,6 +24,7 @@
   "dependencies": {
     "argh": "0.1.x",
     "assume": "0.0.x",
+    "backtrace": "0.0.1",
     "browserify": "4.2.x",
     "connected": "0.0.x",
     "convert-source-map": "0.3.x",
@@ -34,6 +35,7 @@
     "mocha": "1.20.x",
     "mocha-phantomjs": "3.5.x",
     "phantomjs": "1.9.x",
-    "pre-commit": "0.0.x"
+    "pre-commit": "0.0.x",
+    "stack-mapper": "0.2.x"
   }
 }

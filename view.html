@@ -6,6 +6,14 @@
   </head>
   <body>
     <div id="mocha"></div>
+    <!--
+        This should always be the first file loaded as need to introduce and
+        override globals. It could be that other scripts store references to these
+        objects before we can override them. In addition to that, this file also
+        stores the full source map to the /illuminati.js file.
+    -->
+    <script src="/prepare-env.js"></script>
+
     <script src="/mocha.js"></script>
     <script>
       mocha.ui('{illuminati:ui}');

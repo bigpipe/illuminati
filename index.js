@@ -8,6 +8,13 @@ var browserify = require('./browserify')
   , path = require('path')
   , fs = require('fs');
 
+//
+// Empty dummy function, does nothing unless an error argument has been given.
+//
+function nope(err) {
+  if (err) return console.error(err.stack) && process.exit(1);
+}
+
 /**
  * Illuminati: Secret society of testers.
  *
@@ -103,6 +110,7 @@ Illuminati.readable('run', function run() {
     return process.exit(0);
   }
 
+  if (this.argv.server) return this.server(nope);
   if (!this.argv.phantom) return this.mocha(ran);
 
   this.server(function listening(err) {
@@ -124,7 +132,7 @@ Illuminati.readable('server', function server(fn) {
 
   browserify(this.files, this.conf.browserify || {
     basedir: this.root
-  }, function (err, source, map) {
+  }, function (err, source, map, preload) {
     if (err) {
       console.error(err.stack);
       return process.exit(1);
@@ -140,8 +148,11 @@ Illuminati.readable('server', function server(fn) {
     }, {
       data: JSON.stringify(map),
       type: 'application/json',
-      url: '/illuminati.map',
-      map: map
+      url: '/illuminati.map'
+    }, {
+      type: 'text/javascript',
+      url: '/prepare-env.js',
+      data: preload
     });
 
     require('connected')(app, illuminati.conf.port, fn);

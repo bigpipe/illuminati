@@ -46,8 +46,26 @@ module.exports = function compile(files, options, fn) {
     // convert the created sourcemap to a JSON file which we can serve from our
     // server.
     //
-    var map = convert.fromSource(source);
+    var map = convert.fromSource(source).toObject();
+    map.file = '/illuminati.js';
 
-    fn(undefined, convert.removeComments(source), map ? map.toObject() : undefined);
+    //
+    // Remove the old source-map comments from the source.
+    //
+    source = convert.removeComments(source);
+
+    //
+    // Now create a bundle where we can add the mapping in to, this bootstrapper
+    // also needs to run through browserify as it uses more modules.
+    //
+    var bootstrap = browserify({ basedir: __dirname });
+    bootstrap.add('./bootstrap.js');
+
+    bootstrap.bundle({}, function bundled(err, preload) {
+      if (err) return fn(err);
+
+      preload += ';Error.sourcemap='+ JSON.stringify(map) +';';
+      fn(undefined, source, map, preload);
+    });
   });
 };
