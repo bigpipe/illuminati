@@ -20,13 +20,10 @@ var Illuminati = 'undefined' !== typeof window
 function Error() {
   Illuminati.apply(this, arguments);
 
-  if (!this.stack) try { throw new Illuminati(); }
-  catch (e) { this.stack = e.stack || this.stack; }
-
   var backtrace = new Backtrace({ error: this })
     , sourcemap = stackmap(Error.sourcemap).map(backtrace.traces);
 
-  //this.stringify(backtrace.traces, sourcemap);
+  this.stringify(backtrace.traces, sourcemap);
 }
 
 Error.prototype = new Illuminati;
@@ -47,8 +44,8 @@ Error.prototype.stringify = function stringify(traces, frames) {
       , map = frames[i]
       , location = [];
 
-    if (map.file) location.push(map.file);
-    else if (trace.file) location.push(trace.file);
+    if (map.filename) location.push(map.filename);
+    else if (trace.filename) location.push(trace.filename);
 
     if (map.line) location.push(map.line);
     else if (trace.line) location.push(trace.line);
