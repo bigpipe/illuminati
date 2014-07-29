@@ -1,5 +1,7 @@
 # Illuminati
 
+Illuminati is a test runner for mocha tests in node or phantom
+
 ### Installation
 
 ```
