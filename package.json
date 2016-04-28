@@ -1,6 +1,6 @@
 {
   "name": "illuminati",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "secret society",
   "main": "index.js",
   "scripts": {
@@ -23,7 +23,7 @@
   "homepage": "https://github.com/3rd-eden/illuminati",
   "dependencies": {
     "argh": "0.1.x",
-    "assume": "0.0.x",
+    "assume": "1.4.x",
     "backtrace": "0.0.1",
     "browserify": "4.2.x",
     "connected": "0.0.x",
